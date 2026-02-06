@@ -1,0 +1,17 @@
+name: SceneReconstruction
+options:
+  deploymentTarget:
+    iOS: "15.0"
+    visionOS: "1.0"
+    macOS: "12.0"
+targets:
+  SceneReconstruction:
+    type: application
+    platform: iOS
+    sources:
+      - Sources/
+    settings:
+      base:
+        DEVELOPMENT_TEAM: ""
+        CODE_SIGN_IDENTITY: ""
+        CODE_SIGN_STYLE: Automatic
