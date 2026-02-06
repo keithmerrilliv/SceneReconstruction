@@ -8,39 +8,39 @@ This architecture provides an end-to-end solution for reconstructing scenes with
 ## Core Components
 
 ### 1. Data Acquisition Layer
-- **Camera Interface**: Handles input from RGB-D cameras using AVFoundation and Camera APIs
-- **Sensor Fusion Module**: Integrates data from IMU and other sensors for enhanced accuracy
-- **Preprocessing Pipeline**: Performs image enhancement, noise reduction, and calibration adjustments using CoreImage
+- **Camera Interface**: Handles input from RGB cameras using AVFoundation and Camera APIs (Phase 1 implementation complete)
+- **Sensor Fusion Module**: Integrates data from IMU and other sensors for enhanced accuracy (Phase 2 enhancement planned)
+- **Preprocessing Pipeline**: Performs image enhancement, noise reduction, and calibration adjustments using CoreImage (Phase 1 implementation complete)
 
 ### 2. Feature Extraction Engine
-- **Keypoint Detection**: Identifies distinctive points in images using Vision framework for feature detection
-- **Descriptor Generation**: Creates feature descriptors that encode local appearance information with optimized Apple Neural Engine processing
-- **Matching Module**: Establishes correspondences between features across multiple views leveraging SIMD optimizations
+- **Keypoint Detection**: Identifies distinctive points in images using Vision framework for feature detection (Phase 1 implementation complete)
+- **Descriptor Generation**: Creates feature descriptors that encode local appearance information with optimized Apple Neural Engine processing (Phase 1 partial implementation - basic structure completed)  
+- **Matching Module**: Establishes correspondences between features across multiple views leveraging SIMD optimizations (Phase 1 partial implementation - basic matching framework created)
 
 ### 3. Geometry Estimation Core
-- **Pose Estimation**: Determines camera positions and orientations relative to the scene using Vision's VNHomogeneousDetector
-- **Depth Estimation**: Generates depth maps from stereo pairs or monocular cues through neural networks with CoreML integration
-- **Point Cloud Generation**: Constructs initial sparse point clouds based on triangulation methods optimized for Metal performance
+- **Pose Estimation**: Determines camera positions and orientations relative to the scene using Vision's VNFeaturePrintObservation (Phase 1 partial implementation)
+- **Depth Estimation**: Generates depth maps from stereo pairs or monocular cues through neural networks with CoreML integration (Phase 2 enhancement planned)
+- **Point Cloud Generation**: Constructs initial sparse point clouds based on triangulation methods optimized for Metal performance (Phase 1 partial implementation)
 
 ### 4. Reconstruction Pipeline
-- **Bundle Adjustment**: Optimizes camera poses and 3D points simultaneously to minimize reprojection errors using RealityKit Object Capture framework
-- **Surface Reconstruction**: Converts point cloud data into mesh representations leveraging Apple's photogrammetry processing capabilities  
-- **Texture Mapping**: Applies color information onto reconstructed surfaces for visual realism with Metal shader support
+- **Bundle Adjustment**: Optimizes camera poses and 3D points simultaneously to minimize reprojection errors using RealityKit Object Capture framework (Phase 1 partial implementation - basic session management completed)
+- **Surface Reconstruction**: Converts point cloud data into mesh representations leveraging Apple's photogrammetry processing capabilities (Phase 2 enhancement planned)  
+- **Texture Mapping**: Applies color information onto reconstructed surfaces for visual realism with Metal shader support (Phase 2 enhancement planned)
 
 ### 5. Post-processing Module
-- **Mesh Optimization**: Simplifies complex meshes while preserving important geometric details through decimation algorithms optimized on GPU via Metal
-- **Hole Filling**: Interpolates missing data regions using inpainting techniques or neural completion models accelerated by Neural Engine 
-- **Quality Assessment**: Evaluates reconstruction accuracy based on various metrics like RMSE, completeness ratio with Vision-based validation
+- **Mesh Optimization**: Simplifies complex meshes while preserving important geometric details through decimation algorithms optimized on GPU via Metal (Phase 2 enhancement planned)
+- **Hole Filling**: Interpolates missing data regions using inpainting techniques or neural completion models accelerated by Neural Engine (Phase 2 enhancement planned) 
+- **Quality Assessment**: Evaluates reconstruction accuracy based on various metrics like RMSE, completeness ratio with Vision-based validation (Phase 2 enhancement planned)
 
 ### 6. Storage & Retrieval System
-- **Spatial Indexing**: Organizes reconstructed elements efficiently for quick access via optimized data structures compatible with RealityKit entities
-- **Compression Framework**: Reduces memory footprint without significant quality loss using Apple's compression technologies (e.g., Asset Catalogs)
-- **Version Control**: Manages iterative improvements and maintains historical versions of reconstructions integrated with iCloud synchronization
+- **Spatial Indexing**: Organizes reconstructed elements efficiently for quick access via optimized data structures compatible with RealityKit entities (Phase 2 enhancement planned)
+- **Compression Framework**: Reduces memory footprint without significant quality loss using Apple's compression technologies (e.g., Asset Catalogs) (Phase 2 enhancement planned)
+- **Version Control**: Manages iterative improvements and maintains historical versions of reconstructions integrated with iCloud synchronization (Phase 2 enhancement planned)
 
 ### 7. Rendering & Visualization Layer  
-- **Physically Based Rendering Engine**: Leverages Metal for realistic lighting simulations incorporating PBR materials 
-- **Lighting Analysis Pipeline**: Uses CoreImage to process RAW image data for accurate environmental lighting conditions
-- **Real-time Preview System**: Provides interactive visualization of reconstructed scenes with smooth frame rates utilizing Metal performance shaders
+- **Physically Based Rendering Engine**: Leverages Metal for realistic lighting simulations incorporating PBR materials (Phase 1 partial implementation - basic structure completed)
+- **Lighting Analysis Pipeline**: Uses CoreImage to process RAW image data for accurate environmental lighting conditions (Phase 1 partial implementation - basic framework in place)
+- **Real-time Preview System**: Provides interactive visualization of reconstructed scenes with smooth frame rates utilizing Metal performance shaders (Phase 2 enhancement planned)
 
 ## Architecture Flow
 
