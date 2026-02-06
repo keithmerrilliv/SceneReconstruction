@@ -16,6 +16,7 @@ class CameraCaptureManager: NSObject, AVCapturePhotoCaptureDelegate {
     
     private var photoOutput: AVCapturePhotoOutput?
     private var videoInput: AVCaptureDeviceInput? 
+    private var captureSession: AVCaptureSession!
     private var captureCompletion: CaptureCompletion?
     
     /// Completion handler for captured image results 
@@ -32,10 +33,14 @@ class CameraCaptureManager: NSObject, AVCapturePhotoCaptureDelegate {
     // MARK: - Setup Methods
     
     private func setupCaptureSession() {
-        let captureSession = AVCaptureSession()
+        captureSession = AVCaptureSession()
+        captureSession.sessionPreset = .photo
         
         do  {
-            guard let device = AVCaptureDevice.default(for: .video) else { return } 
+            guard let device = AVCaptureDevice.default(for: .video) else { 
+                print("Error: No video device available")
+                return
+            }
             
             videoInput = try AVCaptureDeviceInput(device: device)
             
@@ -43,30 +48,42 @@ class CameraCaptureManager: NSObject, AVCapturePhotoCaptureDelegate {
                 captureSession.addInput(videoInput!)
                 
                 print("Added video input to capture session")
+            } else {
+                print("Warning: Could not add video input to capture session")
             }
             
             photoOutput = AVCapturePhotoOutput()
             
-            // TODO: Implementation incomplete - Configure for RAW image data support (Phase 1 requirement) 
+            // Enable RAW image data support for Phase 1 requirement
             if #available(iOS 20, *) {  
-                //photoOutput?.isHighResolutionCaptureEnabled = true
+                photoOutput?.isHighResolutionCaptureEnabled = true
+                
+                print("Configured high resolution capture enabled")
+                
+                // For iOS 20+, enable RAW format with proper pixel format type
+                let supportedPixelFormats = photoOutput?.supportedRawPhotoPixelFormatTypes ?? []
+                if !supportedPixelFormats.isEmpty {
+                    photoOutput?.isRawPhotoPixelFormatTypeEnabled = true
+                    
+                    print("RAW image capture format enabled")
+                }
             } else {
-                print("Warning: High resolution capture not available")
+                // For older versions, we'll still set up the session
+                print("Warning: High resolution capture not available on this iOS version")
             }
             
             if captureSession.canAddOutput(photoOutput!) {
                 captureSession.addOutput(photoOutput!)
                 
-                // TODO: Implementation incomplete - Configure for RAW image data support (Phase 1 requirement) 
-                //photoOutput?.isRawPhotoPixelFormatTypeEnabled = true
-                
-                print("Added photo output with RAW support to session")   
+                print("Added photo output to session")   
+            } else {
+                print("Warning: Could not add photo output to capture session")
             }
             
             DispatchQueue.global(qos: .userInitiated).async {
-                captureSession.startRunning()
+                self.captureSession.startRunning()
                 
-                print("Capture session started")
+                print("Capture session started successfully")
             }  
         } catch { 
             print("Error setting up capture session: \(error)")
@@ -90,13 +107,13 @@ class CameraCaptureManager: NSObject, AVCapturePhotoCaptureDelegate {
         let photoSettings = AVCapturePhotoSettings()
         
         if #available(iOS 20, *) {  
-            //photoSettings.isHighResolutionCaptureEnabled = true
+            photoSettings.isHighResolutionCaptureEnabled = true
             
             print("Configured high resolution capture")
+            
+            // Enable RAW format support for iOS 20+
+            photoSettings.isRawPhotoPixelFormatTypeEnabled = true
         }
-        
-        // Request RAW image format for lighting analysis pipeline input (Phase 1 requirement) 
-        //photoSettings.isRawPhotoPixelFormatTypeEnabled = true
         
         self.captureCompletion = completion
         
@@ -166,7 +183,7 @@ class CameraCaptureManager: NSObject, AVCapturePhotoCaptureDelegate {
     } 
     
     /// Enhance images specifically for RealityKit Object Capture pipeline input (Phase 1 requirement) 
-    @available(iOS 26, *)
+    @available(iOS 20, *)
     
     private func enhanceForObjectCapture(_ ciImage: CIImage, context: CIContext) -> CIImage {
         
@@ -180,10 +197,15 @@ class CameraCaptureManager: NSObject, AVCapturePhotoCaptureDelegate {
         guard let denoisedOutput = noiseReductionFilter.outputImage else { return ciImage }
         
         // Apply sharpening for better edge definition in 3D reconstruction  
+        let sharpnessFilter = CIFilter(name: "CISharpenLuminance")!
+        
+        sharpnessFilter.setValue(denoisedOutput, forKey: kCIInputImageKey)
+        
+        sharpnessFilter.setValue(0.5, forKey: "inputSharpness")
         
         print("Applied Phase 1 enhancement filters to image")   
         
-        return denoisedOutput
+        return sharpnessFilter.outputImage ?? denoisedOutput
     } 
     
     /// Validate that captured images meet Object Capture requirements (Phase 1 requirement)
@@ -193,7 +215,7 @@ class CameraCaptureManager: NSObject, AVCapturePhotoCaptureDelegate {
         let minimumSize = CGSize(width: 640, height: 480)
         
         return image.size.width >= minimumSize.width && 
-        image.size.height >= minimumSize.height
+               image.size.height >= minimumSize.height
     }
     
     // MARK: - AVCapturePhotoCaptureDelegate

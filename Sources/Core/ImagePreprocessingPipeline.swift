@@ -141,4 +141,52 @@ class ImagePreprocessingPipeline {
         return !images.isEmpty 
     }
     
+    /// Enhanced preprocessing with CoreImage pipeline (Phase 1 requirement)
+    func preprocessWithCoreImagePipeline(_ originalImage: UIImage) -> UIImage? {
+        
+        guard let ciImage = CIImage(image: originalImage) else { 
+            print("Error converting UIImage to CIImage")
+            return nil
+        }
+        
+        // Create a proper CoreImage processing chain for Phase 1 enhancement requirements  
+        var processedImage = ciImage
+        
+        // Apply noise reduction (Phase 1 requirement)
+        let noiseFilter = CIFilter(name: "CINoiseReduction")!
+        noiseFilter.setValue(processedImage, forKey: kCIInputImageKey)
+        noiseFilter.setValue(0.2, forKey: "inputNoiseLevel")
+        
+        if let filteredOutput = noiseFilter.outputImage {
+            processedImage = filteredOutput
+        }
+        
+        // Apply sharpening for better edge definition (Phase 1 requirement) 
+        let sharpnessFilter = CIFilter(name: "CISharpenLuminance")!
+        sharpnessFilter.setValue(processedImage, forKey: kCIInputImageKey)
+        sharpnessFilter.setValue(0.6, forKey: "inputSharpness")
+        
+        if let filteredOutput = sharpnessFilter.outputImage {
+            processedImage = filteredOutput
+        }
+        
+        // Apply contrast enhancement (Phase 1 requirement) 
+        let contrastFilter = CIFilter(name: "CIColorControls")!
+        contrastFilter.setValue(processedImage, forKey: kCIInputImageKey)
+        contrastFilter.setValue(0.3, forKey: "inputContrast")
+        
+        if let filteredOutput = contrastFilter.outputImage {
+            processedImage = filteredOutput
+        }
+        
+        // Convert back to UIImage for return  
+        guard let cgImage = ciContext.createCGImage(processedImage, from: processedImage.extent) else {
+            print("Error converting CI image back to CG Image")
+            return nil 
+        } 
+        
+        print("Completed enhanced CoreImage preprocessing pipeline")    
+        
+        return UIImage(cgImage: cgImage)
+    }
 }

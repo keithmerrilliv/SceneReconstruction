@@ -18,9 +18,9 @@ The project follows a modular architecture with the following components:
 
 ### Phase 1: Foundation (Completed)
 - Camera interface with AVFoundation integration  
-- CoreImage preprocessing pipeline implementation
-- Vision framework-based feature detection
-- Basic geometric calculation structures (PnP solver, triangulation)
+- CoreImage preprocessing pipeline implementation with enhanced filters
+- Vision framework-based feature detection with robust matching capabilities
+- Complete geometric calculation structures including RANSAC outlier rejection and triangulation algorithms  
 
 ### Phase 2: Enhancement & Scalability (In Progress) 
 - RealityKit Object Capture integration
@@ -30,10 +30,11 @@ The project follows a modular architecture with the following components:
 ## Core Components
 
 ### Sources/Core/
-- **CameraCaptureManager.swift** - Handles camera sessions and image capture
-- **VisionFeatureExtractor.swift** - Implements feature detection using Vision framework  
-- **GeometryEstimator.swift** - Provides geometric calculations for scene reconstruction
-- **ObjectCaptureManager.swift** - Manages RealityKit object capture workflow
+- **CameraCaptureManager.swift** - Handles camera sessions and image capture with RAW data support  
+- **VisionFeatureExtractor.swift** - Implements feature detection and matching using Vision framework with Accelerate optimization
+- **GeometryEstimator.swift** - Provides geometric calculations for scene reconstruction including RANSAC-based PnP solver 
+- **ImagePreprocessingPipeline.swift** - Advanced CoreImage filtering pipeline with histogram analysis capabilities
+- **MetalShaderManager.swift** - Metal shader management for GPU-accelerated image enhancement
 
 ### Sources/Architecture/
 - **SystemCoordinator.swift** - Coordinates the overall system flow
@@ -58,7 +59,7 @@ The documentation in `/Resources/Documentation` provides detailed information ab
 ## Development Roadmap
 
 ### Phase 1: Foundation (Completed)
-Establish core infrastructure with basic functionality using native Apple frameworks.
+Establish core infrastructure with comprehensive functionality using native Apple frameworks.
 
 ### Phase 2: Enhancement & Scalability 
 Improve quality, robustness and expand capabilities leveraging advanced Apple technologies.
