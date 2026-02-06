@@ -48,7 +48,7 @@ class PBRRenderer {
     /// Initialize PBR renderer with Metal device (Phase 1 requirement)
     init?(metalDevice: MTLDevice) {   
         
-        guard metalDevice.supportsFeatureSet(.iOS_GPUFamily2_v1) else {
+        guard metalDevice.supportsFamily(.apple2) else {
             print("Error: GPU does not support required feature set for PBR rendering")    
             return nil
         }
@@ -62,17 +62,17 @@ class PBRRenderer {
     /// Apply PBR material to RealityKit entity (Phase 1 requirement)
     func applyPBRMaterial(to entity: inout RKEntity, with lightingConditions: PBRLightingConfig) -> Bool {
         
-        guard let device = self.metalDevice,
-              let queue = self.commandQueue else { 
+        guard self.metalDevice != nil,
+              self.commandQueue != nil else {
             print("Error: Metal not available for PBR rendering")
-            return false  
+            return false
         }
-        
+
         // In a real implementation this would:
         // 1. Create appropriate shaders based on lighting conditions
-        // 2. Configure material properties from analysis results  
+        // 2. Configure material properties from analysis results
         // 3. Apply materials to entity mesh components
-        
+
         print("Applied PBR configuration with intensity \(lightingConditions.intensity) and color temperature \(lightingConditions.colorTemperature)")
         
         return true   // Placeholder - actual implementation would verify successful application
@@ -82,17 +82,17 @@ class PBRRenderer {
     func updateMaterialProperties(for entity: inout RKEntity, 
                                   with newLightingConditions: PBRLightingConfig) -> Bool {
         
-        guard let device = self.metalDevice,
-              let queue = self.commandQueue else { 
+        guard self.metalDevice != nil,
+              self.commandQueue != nil else {
             print("Error: Metal not available for PBR rendering")
-            return false  
+            return false
         }
-        
+
         // In a real implementation this would:
         // 1. Recalculate material properties based on new lighting
-        // 2. Update shaders with modified parameters    
+        // 2. Update shaders with modified parameters
         // 3. Apply changes to entity mesh components
-        
+
         print("Updated PBR materials for changed lighting conditions")
         
         return true   // Placeholder - actual implementation would verify successful update 
@@ -107,7 +107,7 @@ class PBRRenderer {
         } 
         
         // Verify support for required feature sets 
-        if !device.supportsFeatureSet(.iOS_GPUFamily2_v1) {
+        if !device.supportsFamily(.apple2) {
             
             print("Warning: Current GPU may not fully support advanced PBR rendering features")
             

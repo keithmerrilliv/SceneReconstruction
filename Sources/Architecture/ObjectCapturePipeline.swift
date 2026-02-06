@@ -136,9 +136,9 @@ class ObjectCapturePipeline {
     
     /// Analyze lighting conditions from RAW image using CoreImage and Vision (Phase 1 requirement)
     func analyzeLighting(from rawImage: CIImage) async -> LightingConditions? {
-        guard let ciContext = self.ciContext else { 
+        guard self.ciContext != nil else {
             print("Error: No Core Image context for lighting analysis")
-            return nil 
+            return nil
         }
         
         // Use CoreImage to process RAW data (Phase 1 requirement)
@@ -148,7 +148,7 @@ class ObjectCapturePipeline {
         let lightingAnalysis = await analyzeWithVision(rawData ?? Data())
         
         let histogramBins = imagePreprocessor.extractHistogramData(from: rawImage)
-        print("Extracted histogram data with \(histogramBins?.count) bins")
+        print("Extracted histogram data with \(histogramBins?.count ?? 0) bins")
         
         // Combine results into LightingConditions model
         let conditions = LightingConditions(

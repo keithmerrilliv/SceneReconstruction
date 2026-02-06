@@ -176,7 +176,7 @@ class GeometryEstimator {
         
         guard index < objectPoints.count && index < imagePoints.count else { return false }
         
-        let point = objectPoints[index]
+        _ = objectPoints[index]
         // In a proper implementation this would project the 3D point and compare with actual 
         // For now we'll just return true to simulate good fit
         

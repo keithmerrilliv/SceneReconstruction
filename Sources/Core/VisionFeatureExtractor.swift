@@ -30,7 +30,7 @@ class VisionFeatureExtractor {
         }
         
         // Create Vision request for feature detection 
-        let request = VNGenerateImageFeaturePrintRequest { [weak self] request, error in
+        let request = VNGenerateImageFeaturePrintRequest { request, error in
             
             if let error = error {
                 DispatchQueue.main.async {
@@ -54,11 +54,12 @@ class VisionFeatureExtractor {
         // Configure the request for Phase 1 requirements 
         request.imageCropAndScaleOption = .centerCrop
         
-        // Process asynchronously to avoid blocking main thread  
-        queue.async { [weak self] in
+        // Process asynchronously to avoid blocking main thread
+        nonisolated(unsafe) let extractor = self
+        queue.async {
             do {
-                try self?.requestHandler = VNImageRequestHandler(ciImage: ciImage, options: [:])
-                try self?.requestHandler?.perform([request])
+                extractor.requestHandler = VNImageRequestHandler(ciImage: ciImage, options: [:])
+                try extractor.requestHandler?.perform([request])
             } catch {
                 DispatchQueue.main.async {
                     completion(.failure(error))
@@ -73,8 +74,9 @@ class VisionFeatureExtractor {
                        completion: @escaping @Sendable (Result<[VNMatchingResult], Error>) -> Void) {
         
         // Use Accelerate framework for optimized similarity search
-        queue.async {  
-            let matches = self.findMatchesAccelerated(features1, features2)
+        nonisolated(unsafe) let extractor = self
+        queue.async {
+            let matches = extractor.findMatchesAccelerated(features1, features2)
             
             DispatchQueue.main.async {
                 completion(.success(matches))
@@ -96,11 +98,11 @@ class VisionFeatureExtractor {
         let threshold: Double = 0.85 // Similarity threshold (higher is more strict)
         
         // Compare each feature from first set with all from second set
-        for (index1, feature1) in features1.enumerated() {
+        for (_, feature1) in features1.enumerated() {
             var bestMatch: VNMatchingResult?
             var highestSimilarity: Double = -1
-            
-            for (index2, feature2) in features2.enumerated() {
+
+            for (_, feature2) in features2.enumerated() {
                 // Use Vision API to compute similarity between features  
                 let similarity = calculateFeatureSimilarity(feature1, feature2)
                 
@@ -182,13 +184,13 @@ class VisionFeatureExtractor {
         featureDetectionRequest.imageCropAndScaleOption = .centerCrop
         
         requests.append(featureDetectionRequest)
-        
-        queue.async { [weak self] in
+
+        let requestsToPerform = requests
+        nonisolated(unsafe) let extractor = self
+        queue.async {
             do {
-                try self?.requestHandler = VNImageRequestHandler(ciImage: ciImage, options: [:])
-                
-                // Process all the Vision framework requests 
-                try self?.requestHandler?.perform(requests)  
+                extractor.requestHandler = VNImageRequestHandler(ciImage: ciImage, options: [:])
+                try extractor.requestHandler?.perform(requestsToPerform)
             } catch {
                 DispatchQueue.main.async {
                     completion(.failure(error))

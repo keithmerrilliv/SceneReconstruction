@@ -70,20 +70,25 @@ class MetalShaderManager {
         self.imageEnhancementPipelineState = nil  // Set to actual pipeline when implemented
     }
     
+    /// Get the configured image enhancement pipeline state
+    func configureImageEnhancementPipeline() -> MTLRenderPipelineState? {
+        return imageEnhancementPipelineState
+    }
+
     /// Apply PBR lighting to texture using Metal (Phase 1 requirement)  
     func applyPBRLighting(to inputTexture: MTLTexture, outputTexture: inout MTLTexture?, completion: @Sendable @escaping (Bool) -> Void) {
         
-        guard let device = metalDevice,
-              let commandQueue = self.commandQueue else { 
+        guard metalDevice != nil,
+              let commandQueue = self.commandQueue else {
             DispatchQueue.main.async { completion(false) }
             return
-        } 
-        
+        }
+
         // In a real implementation this would:
-        // 1. Set up the PBR shader with lighting parameters  
-        // 2. Bind textures, buffers and uniforms 
-        // 3. Execute rendering pass for PBR application 
-        
+        // 1. Set up the PBR shader with lighting parameters
+        // 2. Bind textures, buffers and uniforms
+        // 3. Execute rendering pass for PBR application
+
         print("Applying PBR lighting using Metal (placeholder)")
         
         let commandBuffer = commandQueue.makeCommandBuffer()
@@ -111,17 +116,17 @@ class MetalShaderManager {
     /// Enhance image using Metal shaders (Phase 1 requirement)
     func enhanceImage(_ inputTexture: MTLTexture, outputTexture: inout MTLTexture?, completion: @Sendable @escaping (Bool) -> Void) {
         
-        guard let device = metalDevice,
-              let commandQueue = self.commandQueue else { 
+        guard metalDevice != nil,
+              let commandQueue = self.commandQueue else {
             DispatchQueue.main.async { completion(false) }
             return
-        } 
-        
+        }
+
         // In a real implementation this would:
-        // 1. Set up the shader program with parameters  
-        // 2. Bind textures and uniforms 
+        // 1. Set up the shader program with parameters
+        // 2. Bind textures and uniforms
         // 3. Execute rendering pass for image enhancement
-        
+
         print("Enhancing image using Metal shaders (placeholder)")
         
         let commandBuffer = commandQueue.makeCommandBuffer()
@@ -172,7 +177,7 @@ class MetalShaderManager {
         } 
         
         // Verify that the necessary features are supported on current hardware    
-        if !device.supportsFeatureSet(.iOS_GPUFamily2_v1) {   
+        if !device.supportsFamily(.apple2) {
             
             print("Warning: Current GPU does not fully support required Metal feature set") 
             print("Using fallback rendering path...")
