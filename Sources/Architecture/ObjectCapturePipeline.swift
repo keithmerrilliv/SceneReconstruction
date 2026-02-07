@@ -186,7 +186,9 @@ class ObjectCapturePipeline {
     private func analyzeWithVision(_ rawData: Data) async -> VisionLightingAnalysis? {
         
         // Phase 1: Integration with VisionFeatureExtractor component for proper feature extraction
-        return nil // TODO: Full integration with Vision framework pending - current implementation uses placeholder logic  
+        // TODO: Implement full Vision framework integration for lighting analysis
+        // Placeholder until proper Vision integration is complete
+        return nil  
     }
     
     /// Calculate light intensity from RAW image data (Phase 1 implementation)  
@@ -195,6 +197,7 @@ class ObjectCapturePipeline {
         // In production, this would use SIMD/vectorized operations 
         // to efficiently process the raw pixel values
         
+        // TODO: Implement SIMD/vectorized operations for efficient pixel processing
         return 1.0 + Float(rawData.count % 100) / 1000.0  
     }
     
@@ -202,7 +205,8 @@ class ObjectCapturePipeline {
     private func estimateColorTemperature(from rawData: Data) -> CGFloat {
         // In a full implementation this would use proper RGB analysis techniques
         
-        return 6500 + CGFloat(rawData.count % 2000) // Simplified placeholder
+        // TODO: Implement proper RGB color temperature estimation algorithm
+        return 6500 + CGFloat(rawData.count % 2000)
     }
     
     /// Process batch of images through preprocessing pipeline (Phase 1 requirement)

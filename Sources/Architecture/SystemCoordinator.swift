@@ -146,7 +146,7 @@ class SystemCoordinator {
             print("Warning: Could not create CIImage directly from RAW data")
             
             // For true RAW formats (like DNG), we would need additional processing
-            // This is a placeholder implementation that demonstrates the integration pattern
+            // TODO: Implement proper RAW format support (DNG, etc.) with full color space conversion
             
             return nil  // Return nil for unsupported/invalid RAW data in Phase 1
         }

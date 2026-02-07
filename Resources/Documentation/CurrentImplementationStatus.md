@@ -59,4 +59,16 @@ This document provides an updated view of what has been implemented versus plann
 - Architecture laid out according to roadmap requirements
 - Some implementation gaps remain that need completion
 
+
+## Known Implementation Gaps (TODO Items)
+
+The following areas have been identified as requiring further work:
+
+- **ObjectCapturePipeline.swift**: Full Vision framework integration for lighting analysis needs implementation
+- **SystemCoordinator.swift**: Proper RAW format support with color space conversion pending
+- **MetalShaderManager.swift**: Complete PBR rendering pipeline implementation needed
+
+These TODOs are tracked in the codebase and documented here to maintain alignment between source code and documentation.
+
+
 This status report reflects the current state of development and provides clear direction for next steps.

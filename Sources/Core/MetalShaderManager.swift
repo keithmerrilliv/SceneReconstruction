@@ -90,7 +90,10 @@ class MetalShaderManager {
         // 2. Bind textures, buffers and uniforms
         // 3. Execute rendering pass for PBR application
 
-        print("Applying PBR lighting using Metal (placeholder)")
+        // TODO: Implement proper PBR rendering pipeline with:
+        // - Proper shader setup and binding
+        // - Texture management for diffuse/specular maps  
+        // - Lighting calculation implementation
         
         let commandBuffer = commandQueue.makeCommandBuffer()
         
@@ -99,7 +102,7 @@ class MetalShaderManager {
             return
         }
         
-        // For demonstration - in a real implementation we would:
+        // TODO: Implement actual rendering pass with proper shader configuration
         // 1. Set up the PBR shader with lighting parameters  
         // 2. Bind textures and uniforms 
         // 3. Execute rendering pass for image enhancement
@@ -137,7 +140,7 @@ class MetalShaderManager {
             return
         }
         
-        // For demonstration - in a real implementation we would:
+        // TODO: Implement actual rendering pass with proper shader configuration
         // 1. Set up the shader program with parameters  
         // 2. Bind textures and uniforms 
         // 3. Execute rendering pass for image enhancement
