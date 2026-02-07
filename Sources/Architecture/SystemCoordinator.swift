@@ -139,12 +139,20 @@ class SystemCoordinator {
     
     /// Convert RAW image data to CIImage for analysis
     private func convertToCIImage(_ rawData: Data) -> CIImage? {
-        // TODO: Implementation incomplete - In a real implementation this would properly decode RAW image formats
+        // Phase 1 implementation: Attempt to create CIImage from raw data
         
-        // For now create placeholder - actual conversion logic needed based on format
-        let placeholder = CIImage()
+        // Try creating CIImage directly from the data (works for some formats like PNG/JPEG)
+        guard let ciImage = CIImage(data: rawData) else {
+            print("Warning: Could not create CIImage directly from RAW data")
+            
+            // For true RAW formats (like DNG), we would need additional processing
+            // This is a placeholder implementation that demonstrates the integration pattern
+            
+            return nil  // Return nil for unsupported/invalid RAW data in Phase 1
+        }
         
-        return placeholder  // Placeholder - proper RAW decoding required in production
+        print("Successfully created CIImage from input data")
+        return ciImage
     }
 }
 

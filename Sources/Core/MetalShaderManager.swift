@@ -32,7 +32,8 @@ class MetalShaderManager {
         guard let device = metalDevice else {
             print("Warning: No Metal support detected")
             return
-        }  
+        }
+        _ = device  // Use to avoid unused variable warning
         
         commandQueue = device.makeCommandQueue()
         guard commandQueue != nil else { 
