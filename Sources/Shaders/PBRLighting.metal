@@ -52,7 +52,6 @@ fragment float4 pbrFragmentShader(FragmentInput in [[stage_in]],
     // Simple directional lighting calculation (placeholder for real PBR)
     float3 normal = float3(0.0, 0.0, 1.0);  // Default normal for now
     float3 lightDir = normalize(lightParams.lightDirection);
-    float3 viewDir = float3(0.0, 0.0, -1.0);  // View from camera
     
     // Basic lambertian lighting (simplified PBR)
     float NdotL = max(dot(normal, lightDir), 0.0);
@@ -65,7 +64,21 @@ fragment float4 pbrFragmentShader(FragmentInput in [[stage_in]],
 
 /// Image enhancement vertex shader (same as PBR)
 vertex FragmentInput enhanceVertexShader(uint vertexId [[vertex_id]]) {
-    return pbrVertexShader(vertexId);
+    FragmentInput out;
+    
+    // Create a full-screen quad covering the screen
+    if (vertexId == 0) {
+        out.position = float4(-1.0, -1.0, 0.0, 1.0);
+        out.texCoord = float2(0.0, 0.0);
+    } else if (vertexId == 1) {
+        out.position = float4(3.0, -1.0, 0.0, 1.0);
+        out.texCoord = float2(2.0, 0.0);
+    } else {
+        out.position = float4(-1.0, 3.0, 0.0, 1.0);
+        out.texCoord = float2(0.0, 2.0);
+    }
+    
+    return out;
 }
 
 /// Simple image enhancement fragment shader (placeholder implementation)  
