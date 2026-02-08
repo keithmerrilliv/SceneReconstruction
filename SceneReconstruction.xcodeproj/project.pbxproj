@@ -19,6 +19,7 @@
 		E5729A41A69C0C77848B730C /* ObjectCapturePipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430E4DCD61E53F354C96F6C9 /* ObjectCapturePipeline.swift */; };
 		F381D2492F37CE070084CCD8 /* ImageEnhancement.metal in Sources */ = {isa = PBXBuildFile; fileRef = F381D2462F37CE070084CCD8 /* ImageEnhancement.metal */; };
 		F381D24A2F37CE070084CCD8 /* PBRLighting.metal in Sources */ = {isa = PBXBuildFile; fileRef = F381D2472F37CE070084CCD8 /* PBRLighting.metal */; };
+		F381D24C2F3856CD0084CCD8 /* PBRLightingEnhanced.metal in Sources */ = {isa = PBXBuildFile; fileRef = F381D24B2F3856CD0084CCD8 /* PBRLightingEnhanced.metal */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		CFC5FC382A5BE17EBFFA739F /* PBRRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PBRRenderer.swift; sourceTree = "<group>"; };
 		F381D2462F37CE070084CCD8 /* ImageEnhancement.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = ImageEnhancement.metal; sourceTree = "<group>"; };
 		F381D2472F37CE070084CCD8 /* PBRLighting.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = PBRLighting.metal; sourceTree = "<group>"; };
+		F381D24B2F3856CD0084CCD8 /* PBRLightingEnhanced.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = PBRLightingEnhanced.metal; sourceTree = "<group>"; };
 		FC8A697D0E66D3D689057439 /* CameraCaptureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraCaptureManager.swift; sourceTree = "<group>"; };
 		FCA1A31C27FC6AFCA353E3D6 /* ImagePreprocessingPipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePreprocessingPipeline.swift; sourceTree = "<group>"; };
 		FEDAEF74484703EFFD017F8A /* LightingAnalyzer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightingAnalyzer.swift; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 		F381D2482F37CE070084CCD8 /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				F381D24B2F3856CD0084CCD8 /* PBRLightingEnhanced.metal */,
 				F381D2462F37CE070084CCD8 /* ImageEnhancement.metal */,
 				F381D2472F37CE070084CCD8 /* PBRLighting.metal */,
 			);
@@ -186,6 +189,7 @@
 			files = (
 				46957380D0B45CCF3AA1BE69 /* CameraCaptureManager.swift in Sources */,
 				5BCD810DB9FD6722C2516CE6 /* GeometryEstimator.swift in Sources */,
+				F381D24C2F3856CD0084CCD8 /* PBRLightingEnhanced.metal in Sources */,
 				1FC6D1CA8B32659E0FDABAD7 /* ImagePreprocessingPipeline.swift in Sources */,
 				8047E8464BF74A8E694BDD24 /* LightingAnalyzer.swift in Sources */,
 				A9CC087D9E32811AFA924788 /* MetalShaderManager.swift in Sources */,
