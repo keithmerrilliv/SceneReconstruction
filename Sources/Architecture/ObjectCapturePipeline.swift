@@ -83,8 +83,10 @@ class ObjectCapturePipeline {
         // - Mesh generation with proper topology
         
         #if targetEnvironment(simulator)
-        print("Warning: Running in simulator, using placeholder object capture")
-        return try await Task.sleep(nanoseconds: 1_000_000_000).result { nil } as RKEntity?
+        print("Warning: Running in simulator, returning placeholder RKEntity after delay")
+        // Simulate async work with a 1 second delay
+        try await Task.sleep(nanoseconds: 1_000_000_000)
+        return RKEntity()
         #else
         // For actual device - would use:
         // let session = ObjectCaptureSession()
