@@ -42,27 +42,35 @@ class SystemCoordinator {
     // MARK: - Initialization
     
     init() {
-        objectCapturePipeline = ObjectCapturePipeline()
-        objectCaptureManager = ObjectCaptureManager(pipeline: objectCapturePipeline)
-        
-        // Setup lighting analyzer with Core Image context from pipeline
+        // Create shared dependencies
         let metalDevice = MTLCreateSystemDefaultDevice()
         guard let device = metalDevice else {
             print("Failed to create Metal device")
             
-            // Create CIContext without Metal for fallback (Phase 1 requirement)  
-            let ciContext = CIContext() 
-            lightingAnalyzer = LightingAnalyzer(ciContext: ciContext)
-            
+            // Fallback - use placeholder implementations
+            lightingAnalyzer = LightingAnalyzer(ciContext: CIContext())
             pbrRenderer = nil
+            
+            objectCapturePipeline = ObjectCapturePipeline(
+                imagePreprocessor: DefaultImagePreprocessor(),
+                metalShaderManager: MetalShaderManager()
+            )
+            objectCaptureManager = ObjectCaptureManager(pipeline: objectCapturePipeline)
+            
             return   
         }
         
+        // Setup shared CIContext and Metal resources
         let ciContext = CIContext(mtlDevice: device)
         lightingAnalyzer = LightingAnalyzer(ciContext: ciContext)
+        pbrRenderer = PBRRenderer(metalDevice: device)
         
-        // Setup PBR renderer if Metal device is available  
-        pbrRenderer = PBRRenderer(metalDevice: device) 
+        // Initialize pipeline with dependencies
+        objectCapturePipeline = ObjectCapturePipeline(
+            imagePreprocessor: DefaultImagePreprocessor(),
+            metalShaderManager: MetalShaderManager()
+        )
+        objectCaptureManager = ObjectCaptureManager(pipeline: objectCapturePipeline)
     } 
     
     // MARK: - Public Methods

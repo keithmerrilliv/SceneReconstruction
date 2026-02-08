@@ -13,6 +13,10 @@ class MetalShaderManager {
     
     // MARK: - Properties
     
+    public var device: MTLDevice? {
+        return metalDevice
+    }
+    
     private var metalDevice: MTLDevice?
     private var commandQueue: MTLCommandQueue?
     private var imageEnhancementPipelineState: MTLRenderPipelineState?
