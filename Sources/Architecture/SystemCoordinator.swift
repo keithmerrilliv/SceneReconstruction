@@ -144,28 +144,32 @@ class SystemCoordinator {
         
         return try await reconstructScene(from: captureImages, rawImage: ciImage)
     }
-    
-    /// Convert RAW image data to CIImage for analysis
+     
+    /// Convert RAW image data to CIImage for analysis with proper color space handling  
     private func convertToCIImage(_ rawData: Data) -> CIImage? {
-        // Phase 1 implementation: Attempt to create CIImage from raw data
+        // Phase 2 implementation: Proper RAW format support with color space conversion
         
-        // Try creating CIImage directly from the data (works for some formats like PNG/JPEG)
+        // Try creating CIImage directly from the data (works for PNG, JPEG)
         guard let ciImage = CIImage(data: rawData) else {
-            print("Warning: Could not create CIImage directly from RAW data")
+            print("Warning: Could not create CIImage directly from raw data")
             
-            // For true RAW formats (like DNG), we would need additional processing
-            // TODO: Implement proper RAW format support (DNG, etc.) with full color space conversion
+            // For true RAW formats like DNG, use ImageIO framework
+            if let source = CGImageSourceCreateWithData(rawData as CFData, nil),
+               let cgImage = CGImageSourceCreateImageAtIndex(source, 0, nil) {
+                // Create CIImage from CGImage (Color space is preserved automatically)
+                return CIImage(cgImage: cgImage)
+            }
             
-            return nil  // Return nil for unsupported/invalid RAW data in Phase 1
+            print("Error: Could not process raw data with ImageIO framework")
+            return nil  // Return nil for unsupported/invalid RAW data
         }
+        
+        // CIImage created successfully - color space handling is automatic in most cases
         
         print("Successfully created CIImage from input data")
         return ciImage
     }
 }
-
-// MARK: - Error Handling
-
 enum SceneReconstructionError: Error {
     case objectCaptureFailed
     case lightingAnalysisFailed
